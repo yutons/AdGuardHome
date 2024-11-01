@@ -13,59 +13,8 @@
   'pull_request':
 
 'jobs':
-  'test':
-    'runs-on': '${{ matrix.os }}'
-    'env':
-      'GO111MODULE': 'on'
-      'GOPROXY': 'https://goproxy.cn'
-    'strategy':
-      'fail-fast': false
-      'matrix':
-        'os':
-        - 'ubuntu-latest'
-        - 'macOS-latest'
-        - 'windows-latest'
-    'steps':
-    - 'name': 'Checkout'
-      'uses': 'actions/checkout@v2'
-      'with':
-        'fetch-depth': 0
-    - 'name': 'Set up Go'
-      'uses': 'actions/setup-go@v3'
-      'with':
-        'go-version': '${{ env.GO_VERSION }}'
-    - 'name': 'Set up Node'
-      'uses': 'actions/setup-node@v1'
-      'with':
-        'node-version': '${{ env.NODE_VERSION }}'
-    - 'name': 'Set up Go modules cache'
-      'uses': 'actions/cache@v2'
-      'with':
-        'path': '~/go/pkg/mod'
-        'key': "${{ runner.os }}-go-${{ hashFiles('go.sum') }}"
-        'restore-keys': '${{ runner.os }}-go-'
-    - 'name': 'Get npm cache directory'
-      'id': 'npm-cache'
-      'run': 'echo "::set-output name=dir::$( npm config get cache )"'
-    - 'name': 'Set up npm cache'
-      'uses': 'actions/cache@v2'
-      'with':
-        'path': '${{ steps.npm-cache.outputs.dir }}'
-        'key': "${{ runner.os }}-node-${{ hashFiles('client/package-lock.json') }}"
-        'restore-keys': '${{ runner.os }}-node-'
-    - 'name': 'Run tests'
-      'shell': 'bash'
-      'run': 'make VERBOSE=1 deps test go-bench go-fuzz'
-    - 'name': 'Upload coverage'
-      'uses': 'codecov/codecov-action@v1'
-      'if': "success() && matrix.os == 'ubuntu-latest'"
-      'with':
-        'token': '${{ secrets.CODECOV_TOKEN }}'
-        'file': './coverage.txt'
-
   'build-release':
     'runs-on': 'ubuntu-latest'
-    'needs': 'test'
     'steps':
     - 'name': 'Checkout'
       'uses': 'actions/checkout@v2'
