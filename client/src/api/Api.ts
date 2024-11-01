@@ -488,10 +488,14 @@ class Api {
 
     REWRITE_DELETE = { path: 'rewrite/delete', method: 'POST' };
 
-    getRewritesList() {
+    // 定制，增加params参数
+    getRewritesList(params) {
+    // 定制
         const { path, method } = this.REWRITES_LIST;
-
-        return this.makeRequest(path, method);
+        // 定制
+        const url = getPathWithQueryString(path,params);
+        return this.makeRequest(url, method);
+        // 定制
     }
 
     addRewrite(config: any) {

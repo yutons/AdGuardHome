@@ -138,6 +138,9 @@ export const MENU_URLS = {
     root: '/',
     logs: '/logs',
     guide: '/guide',
+    /*定制*/
+    dns_rewrites: '/dns_rewrites',
+    /*定制*/
 };
 
 export const SETTINGS_URLS = {
@@ -151,7 +154,10 @@ export const SETTINGS_URLS = {
 export const FILTERS_URLS = {
     dns_blocklists: '/filters',
     dns_allowlists: '/dns_allowlists',
-    dns_rewrites: '/dns_rewrites',
+    /*定制*/
+    // 删除
+    // dns_rewrites: '/dns_rewrites',
+    /*定制*/
     custom_rules: '/custom_rules',
     blocked_services: '/blocked_services',
 };

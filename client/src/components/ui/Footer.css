@@ -1,4 +1,7 @@
 .footer {
+    /*定制*/
+    display: none;
+    /*定制*/
     padding: 1rem 0;
 }
 

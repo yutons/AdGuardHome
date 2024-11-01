@@ -22,6 +22,14 @@ const MENU_ITEMS = [
 
     // Filters dropdown should have visual order 2
 
+    // 定制，调整菜单
+    {
+        route: MENU_URLS.dns_rewrites,
+        icon: 'log',
+        text: 'dns_rewrites',
+        order: 3,
+    },
+    // 定制
     {
         route: MENU_URLS.logs,
         icon: 'log',
@@ -68,10 +76,12 @@ const FILTERS_ITEMS = [
         route: FILTERS_URLS.dns_allowlists,
         text: 'dns_allowlists',
     },
-    {
-        route: FILTERS_URLS.dns_rewrites,
-        text: 'dns_rewrites',
-    },
+    // 定制，删除菜单
+    // {
+    //     route: FILTERS_URLS.dns_rewrites,
+    //     text: 'dns_rewrites',
+    // },
+    // 定制
     {
         route: FILTERS_URLS.blocked_services,
         text: 'blocked_services',

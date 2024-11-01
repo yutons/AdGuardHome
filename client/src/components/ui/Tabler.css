@@ -7910,7 +7910,9 @@ button.bg-dark:focus {
 
 .pt-5,
 .py-5 {
-    padding-top: 1.5rem !important;
+    /*定制*/
+    padding-top: 0.5rem !important;
+    /*定制*/
 }
 
 .pr-5,
@@ -7920,7 +7922,9 @@ button.bg-dark:focus {
 
 .pb-5,
 .py-5 {
-    padding-bottom: 1.5rem !important;
+    /*定制*/
+    padding-bottom: 0.5rem !important;
+    /*定制*/
 }
 
 .pl-5,

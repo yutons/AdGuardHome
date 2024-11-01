@@ -90,7 +90,9 @@ const ROUTES = [
         component: DnsAllowlist,
     },
     {
-        path: FILTERS_URLS.dns_rewrites,
+        // 定制 调整菜单
+        path: MENU_URLS.dns_rewrites,
+        // 定制
         component: DnsRewrites,
     },
     {

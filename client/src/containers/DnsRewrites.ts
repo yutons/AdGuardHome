@@ -11,7 +11,9 @@ const mapStateToProps = (state: RootState) => {
 };
 
 type DispatchProps = {
-    getRewritesList: () => (dispatch: any) => void;
+    /*定制*/
+    getRewritesList: ({}) => (dispatch: any) => void;
+    /*定制*/
     toggleRewritesModal: (...args: unknown[]) => unknown;
     addRewrite: (...args: unknown[]) => unknown;
     deleteRewrite: (...args: unknown[]) => unknown;

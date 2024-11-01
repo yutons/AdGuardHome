@@ -9,10 +9,14 @@ export const getRewritesListRequest = createAction('GET_REWRITES_LIST_REQUEST');
 export const getRewritesListFailure = createAction('GET_REWRITES_LIST_FAILURE');
 export const getRewritesListSuccess = createAction('GET_REWRITES_LIST_SUCCESS');
 
-export const getRewritesList = () => async (dispatch: any) => {
+// 定制，增加params参数
+export const getRewritesList = (params) => async (dispatch: any) => {
+// 定制
     dispatch(getRewritesListRequest());
     try {
-        const data = await apiClient.getRewritesList();
+        // 定制
+        const data = await apiClient.getRewritesList(params);
+        // 定制
         dispatch(getRewritesListSuccess(data));
     } catch (error) {
         dispatch(addErrorToast({ error }));
@@ -30,7 +34,9 @@ export const addRewrite = (config: any) => async (dispatch: any) => {
         await apiClient.addRewrite(config);
         dispatch(addRewriteSuccess(config));
         dispatch(toggleRewritesModal());
-        dispatch(getRewritesList());
+        // 定制
+        dispatch(getRewritesList({}));
+        // 定制
         dispatch(addSuccessToast(i18next.t('rewrite_added', { key: config.domain })));
     } catch (error) {
         dispatch(addErrorToast({ error }));
@@ -53,7 +59,9 @@ export const updateRewrite = (config: any) => async (dispatch: any) => {
         await apiClient.updateRewrite(config);
         dispatch(updateRewriteSuccess());
         dispatch(toggleRewritesModal());
-        dispatch(getRewritesList());
+        // 定制
+        dispatch(getRewritesList({}));
+        // 定制
         dispatch(addSuccessToast(i18next.t('rewrite_updated', { key: config.domain })));
     } catch (error) {
         dispatch(addErrorToast({ error }));
@@ -70,7 +78,9 @@ export const deleteRewrite = (config: any) => async (dispatch: any) => {
     try {
         await apiClient.deleteRewrite(config);
         dispatch(deleteRewriteSuccess());
-        dispatch(getRewritesList());
+        // 定制
+        dispatch(getRewritesList({}));
+        // 定制
         dispatch(addSuccessToast(i18next.t('rewrite_deleted', { key: config.domain })));
     } catch (error) {
         dispatch(addErrorToast({ error }));

@@ -10,6 +10,9 @@ import Card from '../../ui/Card';
 import PageTitle from '../../ui/PageTitle';
 import { MODAL_TYPE } from '../../../helpers/constants';
 import { RewritesData } from '../../../initialState';
+// 定制
+import {debounce} from 'lodash';
+// 定制
 
 interface RewritesProps {
     t: (...args: unknown[]) => string;
@@ -46,6 +49,17 @@ class Rewrites extends Component<RewritesProps> {
         }
     };
 
+    // 定制
+    handleSearchChange = (event) => {
+        const params = {param: ''};
+        params.param = event.target.value;
+
+        const searchDebounced = debounce(this.props.getRewritesList, 500);
+        // @ts-ignore
+        searchDebounced(params);
+    };
+    // 定制
+
     render() {
         const {
             t,
@@ -67,9 +81,28 @@ class Rewrites extends Component<RewritesProps> {
         } = rewrites;
 
         return (
-            <Fragment>
-                <PageTitle title={t('dns_rewrites')} subtitle={t('rewrite_desc')} />
-
+            // 定制
+            <div>
+            {/*定制*/}
+                {/*定制，增加搜索框*/}
+                <div className="page-header page-header--logs">
+                    <h1 className="page-title page-title--large">
+                        {t('dns_rewrites')}
+                    </h1>
+                    <div className="d-flex flex-wrap form-control--container">
+                        <div className="field__search">
+                            <div className="input-group-search input-group-search__icon--magnifier">
+                                <svg className="icons icon--24 icon--gray">
+                                    <use xlinkHref="#magnifier"></use>
+                                </svg>
+                            </div>
+                            <input type="text" placeholder="请输入主机记录或记录值" onChange={this.handleSearchChange}
+                                   className="form-control form-control--search form-control--transparent"
+                                   style={{paddingRight: '0px'}}/>
+                        </div>
+                    </div>
+                </div>
+                {/*定制*/}
                 <Card id="rewrites" bodyType="card-body box-body--settings">
                     <Fragment>
                         <Table
@@ -101,7 +134,9 @@ class Rewrites extends Component<RewritesProps> {
                         />
                     </Fragment>
                 </Card>
-            </Fragment>
+            {/*定制*/}
+            </div>
+            // 定制
         );
     }
 }

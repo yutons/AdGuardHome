@@ -2,8 +2,10 @@ package filtering
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"slices"
+	"strings"
 
 	"github.com/AdguardTeam/AdGuardHome/internal/aghhttp"
 	"github.com/AdguardTeam/golibs/log"
@@ -19,16 +21,29 @@ type rewriteEntryJSON struct {
 func (d *DNSFilter) handleRewriteList(w http.ResponseWriter, r *http.Request) {
 	arr := []*rewriteEntryJSON{}
 
+	// 定制
+	p := r.URL.Query().Get("param")
+	// 定制
+
 	func() {
 		d.confMu.RLock()
 		defer d.confMu.RUnlock()
 
 		for _, ent := range d.conf.Rewrites {
-			jsonEnt := rewriteEntryJSON{
-				Domain: ent.Domain,
-				Answer: ent.Answer,
+			// 定制
+			// jsonEnt := rewriteEntryJSON{
+			// 	Domain: ent.Domain,
+			// 	Answer: ent.Answer,
+			// }
+			// arr = append(arr, &jsonEnt)
+			if strings.Contains(ent.Domain, p) || strings.Contains(ent.Answer, p) {
+				jsonEnt := rewriteEntryJSON{
+					Domain: ent.Domain,
+					Answer: ent.Answer,
+				}
+				arr = append(arr, &jsonEnt)
 			}
-			arr = append(arr, &jsonEnt)
+			// 定制
 		}
 	}()
 
@@ -44,6 +59,15 @@ func (d *DNSFilter) handleRewriteAdd(w http.ResponseWriter, r *http.Request) {
 
 		return
 	}
+
+	/* 定制 */
+	// 校验主机记录是否重复
+	err = checkForDuplicateDomains(d, rwJSON.Domain, rwJSON.Answer, err)
+	if err != nil {
+		aghhttp.Error(r, w, http.StatusBadRequest, "DNS 解析 | 您当前 添加 的主机记录 %s", err)
+		return
+	}
+	/* 定制 */
 
 	rw := &LegacyRewrite{
 		Domain: rwJSON.Domain,
@@ -128,6 +152,18 @@ func (d *DNSFilter) handleRewriteUpdate(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
+	/* 定制 */
+	// 校验主机记录是否重复
+	/*if updateJSON.Update.Domain != updateJSON.Target.Domain {
+
+	  }*/
+	err = checkForDuplicateDomains(d, updateJSON.Update.Domain, updateJSON.Update.Answer, err)
+	if err != nil {
+		aghhttp.Error(r, w, http.StatusBadRequest, "DNS 解析    您当前 修改 的主机记录 %s", err)
+		return
+	}
+	/* 定制 */
+
 	rwDel := &LegacyRewrite{
 		Domain: updateJSON.Target.Domain,
 		Answer: updateJSON.Target.Answer,
@@ -169,3 +205,25 @@ func (d *DNSFilter) handleRewriteUpdate(w http.ResponseWriter, r *http.Request) 
 	log.Debug("rewrite: removed element: %s -> %s", rwDel.Domain, rwDel.Answer)
 	log.Debug("rewrite: added element: %s -> %s", rwAdd.Domain, rwAdd.Answer)
 }
+
+/* 定制 */
+// 校验主机记录是否重复
+func checkForDuplicateDomains(d *DNSFilter, domain string, answer string, err error) error {
+	num := 0
+	d.confMu.RLock()
+	defer d.confMu.RUnlock()
+	for _, ent := range d.conf.Rewrites {
+		if ent.Domain == domain && ent.Answer == answer {
+			num += 1
+		}
+	}
+
+	if num == 0 {
+		err = nil
+	} else {
+		err = errors.New("已经存在")
+	}
+	return err
+}
+
+/* 定制 */

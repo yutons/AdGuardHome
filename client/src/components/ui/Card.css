@@ -46,6 +46,33 @@
     justify-content: center;
 }
 
+/*定制*/
+.card-body-search {
+    display: flex;
+    align-items: center;
+}
+
+.card-body-search input {
+    margin-top: 12px;
+}
+
+.input-search {
+    left: 0.6rem !important;
+    top: 1.8rem !important;
+}
+
+.footer {
+    display: none;
+}
+
+.ReactTable .rt-th, .ReactTable .rt-td {
+    padding: 5px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/*定制*/
+
 .card-body--status {
     padding: 2.5rem 1.5rem;
     text-align: center;
