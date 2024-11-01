@@ -1,6 +1,6 @@
 module github.com/AdguardTeam/AdGuardHome
 
-go 1.22.2
+go 1.23.2
 
 require (
 	// TODO(a.garipov):  Update when v0.73.3 is released.
